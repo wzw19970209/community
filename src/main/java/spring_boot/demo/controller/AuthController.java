@@ -9,6 +9,8 @@ import spring_boot.demo.Provider.OkHttpProvider;
 import spring_boot.demo.dto.AccessDTO;
 import spring_boot.demo.dto.GitHubUser;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 public class AuthController {
     @Autowired
@@ -20,7 +22,7 @@ public class AuthController {
     @Value("${github.redirect_uri}")
     private String redirect_uri;
     @GetMapping("/callback")
-    public String callback(@RequestParam String code, @RequestParam String state, Model model){
+    public String callback(@RequestParam String code, @RequestParam String state, Model model, HttpServletRequest request){
         AccessDTO accessDTO = new AccessDTO();
         accessDTO.setClient_id(client_id);
         accessDTO.setClient_secret(client_secret);
@@ -29,8 +31,11 @@ public class AuthController {
         accessDTO.setState(state);
         String string = okHttpProvider.getAccessToken(accessDTO);
         GitHubUser user = okHttpProvider.getGitHubUser(string);
-        System.out.println(user.getName());
-        model.addAttribute("user",user);
-        return "index";
+        if(user!=null){
+            request.getSession().setAttribute("user",user);
+            return "redirect:/";
+        }else {
+            return "redirect:/";
+        }
     }
 }
