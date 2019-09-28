@@ -42,17 +42,42 @@
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
-<table border="3" th:if="${session.user}!=null">
-    <tr>
-        <th>ID</th>
-        <th>用户名</th>
-        <th>描述</th>
-    </tr>
-    <tr th:each="user : ${session.user}" th:width="100px">
-        <td th:text="${user.id}" width="200px">2.41</td>
-        <td th:text="${user.name}"width="200px">Onions</td>
-        <td th:text="${user.other}"width="200px">yes</td>
-    </tr>
-</table>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+            <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>发起</h2>
+            <form action="">
+                <div class="form-group">
+                    <label for="title">问题标题（简明扼要）</label>
+                    <input type="text" class="form-control" id="title" placeholder="问题标题">
+                </div>
+                <div class="form-group">
+                    <label for="description">问题补充（必填，参照右侧说明）</label>
+                    <textarea name="description" class="form-control" id="description" cols="30" rows="10"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="title">添加标签</label>
+                    <input type="text" class="form-control" id="tag" placeholder="输入标签，以，分隔">
+                </div>
+                <button type="submit" class="btn btn-success" >发布</button>
+            </form>
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+            <h3>问题发布者</h3>
+            • 问题标题: 请用精简的语言描述您发布的问题，不超过25字
+            <br>
+            • 问题补充: 详细补充您的问题内容，并确保问题描述清晰直观, 并提供一些相关的资料：
+            <br>
+            服务器运行环境信息；
+            软件版本；
+            问题发生的上下文信息；
+            可以完整复现问题的代码（如可直接运行于 Kibana Console 的复现流程）；
+            补充完整的异常和错误信息；
+            注意阅读格式友好，代码和异常信息请用代码标签格式化张贴；
+            <br>
+            • 选择标签: 选择一个或者多个合适的标签，不超过10个字
+        </div>
+    </div>
+</div>
 </body>
 </html>

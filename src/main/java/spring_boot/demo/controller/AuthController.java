@@ -1,4 +1,5 @@
 package spring_boot.demo.controller;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -11,8 +12,8 @@ import spring_boot.demo.dto.GitHubUser;
 import spring_boot.demo.mapper.UserMapper;
 import spring_boot.demo.model.User;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.sql.DataSource;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 @Controller
@@ -28,7 +29,8 @@ public class AuthController {
     @Value("${github.redirect_uri}")
     private String redirect_uri;
     @GetMapping("/callback")
-    public String callback(@RequestParam String code, @RequestParam String state, Model model, HttpServletRequest request){
+    public String callback(@RequestParam String code, @RequestParam String state, Model model,
+                           HttpServletResponse response){
         AccessDTO accessDTO = new AccessDTO();
         accessDTO.setClient_id(client_id);
         accessDTO.setClient_secret(client_secret);
@@ -44,8 +46,10 @@ public class AuthController {
             user.setAccountId(String.valueOf(gitHubUser.getId()));
             user.setGmtCreate((System.currentTimeMillis()));
             user.setGmtModify(user.getGmtCreate());
+            user.setOther(gitHubUser.getBio());
             userMapper.insertUser(user);
-            request.getSession().setAttribute("user",gitHubUser);
+            response.addCookie(new Cookie("token",user.getToken()));
+//            request.getSession().setAttribute("user",gitHubUser);
             return "redirect:/";
         }else {
             return "redirect:/";

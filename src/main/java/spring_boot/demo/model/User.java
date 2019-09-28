@@ -9,6 +9,15 @@ public class User implements Serializable {
     private String token;
     private Long gmtCreate;
     private Long gmtModify;
+    private String other;
+
+    public String getOther() {
+        return other;
+    }
+
+    public void setOther(String other) {
+        this.other = other;
+    }
 
     public Integer getId() {
         return id;
